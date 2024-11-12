@@ -20,7 +20,7 @@ http://localhost:3001
 /api/message
 ```
 
-### 发布消息
+### 通过post请求发布消息
 ```
 POST http://localhost:3001/api/publish
 Content-Type: application/json
