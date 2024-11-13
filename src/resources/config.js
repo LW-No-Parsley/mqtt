@@ -9,7 +9,8 @@ const connectTimeout = 4000; // 连接超时时间，单位为毫秒
 const username = 'admin'; // MQTT 服务器的用户名
 const password = '123456'; // MQTT 服务器的密码
 const reconnectPeriod = 1000; // 重连时间间隔，单位为毫秒
-const topic = 'myMsg'; // 要订阅或发布的主题名称
+const get_topic = 'get-message'; // 要订阅或发布的主题名称
+const post_topic = 'pot-message'
 
 // 发布消息时的选项
 const publishOptions = {
@@ -28,6 +29,7 @@ module.exports = {
   username,
   password,
   reconnectPeriod,
-  topic,
+  get_topic,
+  post_topic,
   publishOptions
 };

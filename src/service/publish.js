@@ -3,7 +3,7 @@
 const client = require('./mqttClient'); // 引入共享的 MQTT 客户端实例
 const config = require('../resources/config'); // 导入配置文件以获取 MQTT 主题和其他配置
 
-const topic = config.topic; // 从配置文件获取要发布的主题
+const topic = config.post_topic; // 从配置文件获取要发布的主题
 
 // 监听连接成功事件，仅在客户端首次连接时打印日志
 client.on('connect', () => {
