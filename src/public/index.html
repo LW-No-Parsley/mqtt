@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MQTT Data Display</title>
+    <style>
+        .status-on { color: green; }
+        .status-off { color: red; }
+    </style>
+</head>
+<body>
+    <h2>传感器数据</h2>
+    <div>温度: <span id="temperature">-</span> °C</div>
+    <div>湿度: <span id="humidity">-</span> %</div>
+    <div>风扇状态: 
+        <span id="fanStatus" class="status-off">关</span>
+    </div>
+    <button id="toggleFanButton">切换风扇状态</button>
+
+    <script>
+        // 创建 WebSocket 连接到服务器
+        const ws = new WebSocket('ws://localhost:8080');//
+        // 处理接收到的 WebSocket 消息
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            console.log(data)
+            // 更新温度和湿度
+            document.getElementById("temperature").textContent = data.temperature;
+            document.getElementById("humidity").textContent = data.humidity;
+
+            // 更新风扇状态显示
+            const fanStatusElement = document.getElementById("fanStatus");
+            if (data.fanOn === "on") {
+                fanStatusElement.textContent = "开";
+                fanStatusElement.className = "status-on";
+            } else {
+                fanStatusElement.textContent = "关";
+                fanStatusElement.className = "status-off";
+            }
+        };
+        function sendFanStatus(){
+        send_data ={
+                fanOn:fanStatus,
+                test1:'',
+                test2:''
+            };
+            //发送相关数据
+            ws.send(JSON.stringify({send_data}));
+        };
+        //更新风扇按钮状态
+        function toggleFanButton(){
+            fanStatus = (fanStatus === "on") ? "off" : "on";
+            sendFanStatus();
+        }
+        // 监听风扇切换按钮点击事件
+        document.getElementById("toggleFanButton").addEventListener("click", toggleFanButton);
+
+        ws.onopen = function() {
+            console.log('WebSocket 连接成功');
+        };
+
+        ws.onclose = function() {
+            console.log('WebSocket 连接已关闭');
+        };
+    </script>
+</body>
+</html>

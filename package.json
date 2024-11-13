@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node src/service/api.js"
+    "start": "nodemon src/service/api.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "mqtt": "^5.10.1"
+    "mqtt": "^5.10.1",
+    "nodemon": "^3.1.7"
   }
 }
