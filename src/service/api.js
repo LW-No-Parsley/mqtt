@@ -1,5 +1,5 @@
 // api.js
-
+const PORT = require('../resources/config').PORT;
 const express = require('express'); // 引入 Express 框架，用于创建服务器和处理请求
 const { getLatestMessage } = require('./subscribe'); // 从订阅模块导入最新消息的获取函数
 const publishMessage = require('./publish'); // 导入发布模块中的发布消息函数
@@ -28,8 +28,7 @@ app.post('/api/publish', (req, res) => {
   }
 });
 
-// 启动服务器并监听指定端口
-const PORT = 3001; // 定义 API 服务器的端口
+// 启动服务器并监听指定端口 // 定义 API 服务器的端口
 app.listen(PORT, () => {
   console.log(`API server running on http://localhost:${PORT}`); // 服务器启动成功后，打印确认信息
 });

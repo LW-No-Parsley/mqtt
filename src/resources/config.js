@@ -11,7 +11,7 @@ const password = '123456'; // MQTT 服务器的密码
 const reconnectPeriod = 1000; // 重连时间间隔，单位为毫秒
 const get_topic = 'get-message'; // 要订阅或发布的主题名称
 const post_topic = 'pot-message'
-
+const PORT = 3001;
 // 发布消息时的选项
 const publishOptions = {
   qos: 1, // 服务质量级别，1 表示确保消息至少送达一次
@@ -31,5 +31,6 @@ module.exports = {
   reconnectPeriod,
   get_topic,
   post_topic,
-  publishOptions
+  publishOptions,
+  PORT
 };
