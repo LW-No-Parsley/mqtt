@@ -3,7 +3,11 @@
 const client = require('./mqttClient'); // 引入共享的 MQTT 客户端实例
 const config = require('../resources/config'); // 导入配置文件以获取 MQTT 主题和其他配置
 
+<<<<<<< HEAD
 const topic = config.get_topic; // 从配置文件获取要订阅的主题
+=======
+const topic = config.topic; // 从配置文件获取要订阅的主题
+>>>>>>> ed34ae693cbd61ff9baccacc54876703ab2a4ffa
 
 let latestMessage = ''; // 用于存储最新接收到的消息
 

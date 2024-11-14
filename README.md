@@ -20,7 +20,11 @@ http://localhost:3001
 /api/message
 ```
 
+<<<<<<< HEAD
 ### 发布消息
+=======
+### 通过post请求发布消息
+>>>>>>> ed34ae693cbd61ff9baccacc54876703ab2a4ffa
 ```
 POST http://localhost:3001/api/publish
 Content-Type: application/json
@@ -39,4 +43,8 @@ Content-Type: application/json
 ### 其他设置
 ```
 src\resources\config.js
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> ed34ae693cbd61ff9baccacc54876703ab2a4ffa
