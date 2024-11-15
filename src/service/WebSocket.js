@@ -4,10 +4,10 @@ const  publishMessage  = require('./publish'); // 导入发布模块
 const  client  = require('./mqttClient'); // 引入 MQTT 客户端
 const { getLatestMessage } = require('./subscribe'); // 获取最新的订阅消息
 const config = require('../resources/config')
-// 创建 WebSocket 服务，监听 8080 端口
+// 创建 WebSocket 服务，监听 8081 端口
 const wss = new WebSocket.Server({ port: 8081 });
 wss.on('listening', () => {
-  console.log('WebSocket server is running on ws://localhost:8080');
+  console.log('WebSocket server is running on ws://localhost:8081');
 });
 // 存储当前连接的 WebSocket 客户端
 let wsClients = [];
