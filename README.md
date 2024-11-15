@@ -40,9 +40,6 @@ Content-Type: application/json
 ```
  "start": "nodemon src/service/WebSocket.js"
 ```
-```
-src\resources\config.js
-```
 ### 其他设置
 ```
 src\resources\config.js
