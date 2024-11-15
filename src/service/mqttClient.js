@@ -11,5 +11,10 @@ const client = mqtt.connect(config.connectUrl, {
   password: config.password,
   reconnectPeriod: config.reconnectPeriod,
 });
+// 监听连接成功事件
+client.on('connect', () => {
+  console.log('Connected to MQTT broker');
+});
 
+module.exports = { client };
 module.exports = client;
