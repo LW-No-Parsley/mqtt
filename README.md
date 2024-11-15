@@ -36,6 +36,13 @@ Content-Type: application/json
 
 }
 ```
+### 可通过修改package中的启动项修改服务
+```
+ "start": "nodemon src/service/WebSocket.js"
+```
+```
+src\resources\config.js
+```
 ### 其他设置
 ```
 src\resources\config.js
