@@ -1,13 +1,13 @@
 // 引入 WebSocket 和发布订阅相关的模块
 const WebSocket = require('ws');
-const  publishMessage  = require('./publish'); // 导入发布模块
-const  client  = require('./mqttClient'); // 引入 MQTT 客户端
-const { getLatestMessage } = require('./subscribe'); // 获取最新的订阅消息
+const  publishMessage  = require('../Util/publish'); // 导入发布模块
+const  client  = require('../Util/mqttClient'); // 引入 MQTT 客户端
+const { getLatestMessage } = require('../Util/subscribe'); // 获取最新的订阅消息
 const config = require('../resources/config')
 // 创建 WebSocket 服务，监听 8081 端口
-const wss = new WebSocket.Server({ port: 8081 });
+const wss = new WebSocket.Server({ port: 8080 });
 wss.on('listening', () => {
-  console.log('WebSocket server is running on ws://localhost:8081');
+  console.log('WebSocket server is running on ws://localhost:8080');
 });
 // 存储当前连接的 WebSocket 客户端
 let wsClients = [];
@@ -49,17 +49,17 @@ function broadcastMessage(message) {
   });
 }
 //订阅 MQTT 主题，并在收到消息时广播给所有 WebSocket 客户端
-client.on('connect', () => {
-  console.log('Connected to MQTT broker');
-  // 订阅指定的 MQTT 主题
-  client.subscribe(config.get_topic, (err) => {
-    if (err) {
-      console.error('Failed to subscribe to topic:', err);
-    } else {
-      console.log('Subscribed to topic "myMsg"');
-    }
-  });
-});
+// client.on('connect', () => {
+//   console.log('Connected to MQTT broker');
+//   // 订阅指定的 MQTT 主题
+//   client.subscribe(config.get_topic, (err) => {
+//     if (err) {
+//       console.error('Failed to subscribe to topic:', err);
+//     } else {
+//       console.log(`Subscribed to topic `);
+//     }
+//   });
+// });
 //当收到 MQTT 消息时，广播给所有 WebSocket 客户端
 client.on('message', (topic, message) => {
   console.log(`Received message from MQTT topic '${topic}': ${message.toString()}`);

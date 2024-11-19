@@ -1,6 +1,6 @@
 // config.js
 
-const host = 'localhost';  // MQTT 服务器的地址
+const host = 'broker.emqx.io';  // MQTT 服务器的地址
 const port = '1883';       // MQTT 服务器监听的端口
 const clientId = `mqtt_${Math.random().toString(16).slice(3)}`; // 生成一个唯一的客户端 ID
 const connectUrl = `mqtt://${host}:${port}`; // 拼接 MQTT 连接 URL
@@ -8,8 +8,8 @@ const clean = true; // 设置为 true 时，表示为"clean session"连接，断
 const connectTimeout = 4000; // 连接超时时间，单位为毫秒
 const username = 'admin'; // MQTT 服务器的用户名
 const password = '123456'; // MQTT 服务器的密码
-const reconnectPeriod = 1000; // 重连时间间隔，单位为毫秒
-const get_topic = 'get-message'; // 要订阅或发布的主题名称
+const reconnectPeriod = 1000; // 重连时间间隔，单位为毫秒// 要订阅或发布的主题名称
+const get_topic = 'get-message'; 
 const post_topic = 'pot-message'
 const PORT = 3001;
 // 发布消息时的选项

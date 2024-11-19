@@ -1,8 +1,8 @@
 // APIservice.js
 const PORT = require('../resources/config').PORT;
 const express = require('express'); // 引入 Express 框架，用于创建服务器和处理请求
-const { getLatestMessage } = require('./subscribe'); // 从订阅模块导入最新消息的获取函数
-const publishMessage = require('./publish'); // 导入发布模块中的发布消息函数
+const { getLatestMessage } = require('../Util/subscribe'); // 从订阅模块导入最新消息的获取函数
+const publishMessage = require('../Util/publish'); // 导入发布模块中的发布消息函数
 
 const app = express(); // 创建 Express 应用实例
 app.use(express.json()); // 使用 JSON 中间件来解析 JSON 格式的请求体
