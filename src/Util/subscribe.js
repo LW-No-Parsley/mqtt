@@ -4,6 +4,7 @@ const client = require('./mqttClient'); // 引入共享的 MQTT 客户端实例
 const config = require('../resources/config'); // 导入配置文件以获取 MQTT 主题和其他配置
 const topic = config.get_topic; // 从配置文件获取要订阅的主题
 const { SensorData } = require('../Util/mysqlClient')
+const thresholdHandler = require('./thresholdHandler')
 
 let latestMessage = ''; // 用于存储最新接收到的消息
 
@@ -24,7 +25,8 @@ client.on('message', async (topic, payload) => {
   try {
     console.log('Received Message:', topic, payload.toString());
     const message = JSON.parse(payload.toString()); // 解析 JSON 数据
-
+    const data = message;
+    thresholdHandler.processMqttMessage(data);
     // 保存到数据库
     await SensorData(message);
     console.log('Message stored successfully');
@@ -32,15 +34,3 @@ client.on('message', async (topic, payload) => {
     console.error('Error processing message:', error);
   }
 });
-// 监听消息事件，接收到指定主题的消息时触发
-// client.on('message', (topic, payload) => {
-//   console.log('Received Message:', topic, payload.toString());
-//   if (topic === config.topic) {
-//     latestMessage = payload.toString();
-//   }
-// });
-// 导出 `latestMessage` 的函数
-// module.exports = { 
-//   // client,
-//   getLatestMessage: () => latestMessage, // 返回最新消息的函数，以保证每次调用时获得最新值
-// };

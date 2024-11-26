@@ -4,6 +4,7 @@ const  publishMessage  = require('../Util/publish'); // 导入发布模块
 const  client  = require('../Util/mqttClient'); // 引入 MQTT 客户端
 const { getLatestMessage } = require('../Util/subscribe'); // 获取最新的订阅消息
 const config = require('../resources/config')
+const thresholdHandler = require('../Util/thresholdHandler'); // 引入阈值处理模块
 // 创建 WebSocket 服务，监听 8081 端口
 const wss = new WebSocket.Server({ port: 8080 });
 wss.on('listening', () => {
@@ -18,15 +19,38 @@ wss.on('connection', (ws) => {
   console.log('New WebSocket client connected');
   // 监听 WebSocket 客户端发送的消息
   ws.on('message', (message) => {
-    console.log('Received message from WebSocket client:', message);
-    // 将 WebSocket 消息发布到 MQTT 主题
+   
     try {
       const payload = JSON.parse(message); // 假设消息是 JSON 格式
-      publishMessage(payload); // 发布消息到 MQTT 主题
-    } catch (error) {
-      console.error('Invalid message format', error); // 如果消息不是 JSON 格式
-    }
+      console.log('Received message from WebSocket client:', payload);
+      // 指定允许发布的字段列表
+      const allowedFields = ['LED', 'IRS','FS']; 
+      const filteredPayload = {};
+      const unallowedFields = {};
+      // 过滤 payload，只保留允许的字段
+      Object.keys(payload).forEach((field) => {
+        if (allowedFields.includes(field)) {
+          filteredPayload[field] = payload[field];
+        }else{
+          unallowedFields[field] = payload[field];
+        }
+      });
+      if (Object.keys(filteredPayload).length > 0) {
+        // 只有当 filteredPayload 有内容时才发布
+        publishMessage(filteredPayload);
+        console.log('Published filtered message:', filteredPayload);
+      } 
+      if (Object.keys(unallowedFields).length > 0) {
+        const data = unallowedFields;
+        console.log('web',data)
+        thresholdHandler.updateThresholds(data);
+        
+      }}
+      catch (error) {
+        console.error('Invalid message format', error); // 如果消息不是 JSON 格式
+      }
   });
+  
   // 监听 WebSocket 客户端断开连接
   ws.on('close', () => {
     // 从客户端列表中移除断开连接的客户端
@@ -48,18 +72,6 @@ function broadcastMessage(message) {
     });
   });
 }
-//订阅 MQTT 主题，并在收到消息时广播给所有 WebSocket 客户端
-// client.on('connect', () => {
-//   console.log('Connected to MQTT broker');
-//   // 订阅指定的 MQTT 主题
-//   client.subscribe(config.get_topic, (err) => {
-//     if (err) {
-//       console.error('Failed to subscribe to topic:', err);
-//     } else {
-//       console.log(`Subscribed to topic `);
-//     }
-//   });
-// });
 //当收到 MQTT 消息时，广播给所有 WebSocket 客户端
 client.on('message', (topic, message) => {
   console.log(`Received message from MQTT topic '${topic}': ${message.toString()}`);
