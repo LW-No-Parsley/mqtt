@@ -15,6 +15,4 @@ const client = mqtt.connect(config.connectUrl, {
 client.on('connect', () => {
   console.log('Connected to MQTT broker');
 });
-
-module.exports = { client };
 module.exports = client;
