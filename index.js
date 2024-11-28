@@ -1,26 +1,13 @@
 // index.js
+const { broadcastMessage } = require('./src/Util/broadcast'); // 导入广播功能
+require('./src/Util/mqttClient'); // 初始化 MQTT 客户端
+require('./src/Util/subscribe'); // 订阅消息
+require('./src/service/WebSocket'); // 启动 WebSocket 服务器
 
-// 引入必要的模块
-const mqttClient = require('./src/Util/mqttClient'); // MQTT 客户端实例
-const websocket = require('./src/service/websocket'); // WebSocket 服务
-require('./src/Util/subscribe'); // 订阅模块，自动处理消息接收和存储
-require('./src/Util/thresholdHandler'); // 阈值处理模块（自动处理阈值更新）
+// 监听 MQTT 消息并广播给 WebSocket 客户端
+const client = require('./src/Util/mqttClient'); // 引入共享的 MQTT 客户端实例
 
-// 启动应用
-function start() {
-  // 监听 MQTT 连接成功事件
-  mqttClient.on('connect', () => {
-    console.log('MQTT client connected successfully.');
-
-    // WebSocket 服务已经在 websocket.js 中启动
-    // MQTT 客户端自动订阅了主题，在 subscribe.js 中处理消息接收和存储
-  });
-
-  // 监听 MQTT 连接错误
-  mqttClient.on('error', (err) => {
-    console.error('Error connecting to MQTT broker:', err.message);
-  });
-}
-
-// 启动应用
-start();
+client.on('message', (topic, message) => {
+  console.log(`Received MQTT message from topic '${topic}':`, message.toString());
+  broadcastMessage(message.toString()); // 将 MQTT 消息广播到 WebSocket 客户端
+});

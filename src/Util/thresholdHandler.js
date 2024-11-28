@@ -1,5 +1,5 @@
 const publishMessage = require('./publish'); // 发布模块
-
+const { broadcastMessage } = require('./broadcast')
 // 全局存储 WebSocket 的阈值
 let thresholds = {
   aout : false,
@@ -40,21 +40,34 @@ module.exports = {
     if (thresholds.soilMoisture !== null && data.SMS !== undefined) {
       if (data.SMS < thresholds.soilMoisture) {
         console.log('Threshold met: Turning IRS on');
-        publishMessage({"IRS": "on"}); // 发布 {"IRS": "on"}
+        const message = {"IRS": "on"}
+        setTimeout(() => {
+          publishMessage(message); // 发布 {"IRS": "on"}
+          broadcastMessage(message)
+        },2000)
+
       }
     }
 
     if (thresholds.lightIntensity !== null && data.LS !== undefined) {
       if (data.LS < thresholds.lightIntensity) {
         console.log('Threshold met: Turning LED on');
-        publishMessage({ LED: 'on' }); // 发布 {"LED": "on"}
+        const message = { LED: 'on' }
+        setTimeout(() => {
+          publishMessage(message); // 发布 {"LED": "LED"}
+          broadcastMessage(message)
+        },2000)
       }
     }
 
     if (thresholds.FSYZ !== null && data.TS !== undefined) {
       if (data.FS > thresholds.FSYZ) {
         console.log('Threshold met: Turning LED on');
-        publishMessage({ FS: 'on' }); // 发布 {"LED": "on"}
+        const message = { FS: 'on' };
+        setTimeout(() => {
+          publishMessage(message); // 发布 {"FS": "on"}
+          broadcastMessage(message)
+        },2000)
       }
     }
   }
