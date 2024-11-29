@@ -24,20 +24,14 @@ client.on('connect', () => {
 client.on('message', async (topic, payload) => {
   try {
     const payloadStr = payload.toString();
-    console.log('Received Message:', payloadStr);
-    let formattedStr = `{${payloadStr.replace(/ /g, ',')}}`;
-    console.log('Formatted Message:',formattedStr);
+    const message = payloadStr.split(' ') // 按空格分割键值对
+      .reduce((acc, pair) => {
+        const [key, value] = pair.split(':'); // 按冒号分割键和值
+        acc[key] = value; // 将键值对添加到对象中
+        return acc;
+      }, {});
 
-    const parsedMessage = JSON.parse(formattedStr);
-
-      const message = Object.keys(parsedMessage)
-    .reduce((acc, key) => {
-
-      const cleanKey = key.replace(/['"]+/g, ''); // 去掉键的引号
-      const cleanValue = parsedMessage[key].replace(/['"]+/g, '');
-      acc[key] = cleanValue;
-      return acc;
-    },{});
+    console.log('Formatted Message:', message); // 打印格式化后的消息
 
     console.log('parsed message:',message);
 
