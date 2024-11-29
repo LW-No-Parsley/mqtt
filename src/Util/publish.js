@@ -12,7 +12,9 @@ client.on('connect', () => {
 
 // 定义并导出发布消息的函数
 function publishMessage(payload) {
-  const message = JSON.stringify(payload);
+ const entries = Object.entries(payload);
+ const message = entries.map(([key,value]) =>
+  `${key}:${value}`).join(' ');
   // 使用客户端发布消息到指定主题
   client.publish(topic, message, config.publishOptions, (error) => {
     if (error) {
